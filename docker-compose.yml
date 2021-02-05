@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  wuhanpl:
+    container_name: shopsbot
+    image: shopsbot:1.0
+    environment:
+      TELEGRAM_TOKEN: 'TOKEN'
+      OUTPUT_FOLDER: '/outputs/'
+      REFRESH_MINUTES: '5'
+      TZ: 'Europe/Warsaw'
+    volumes:
+      - './outputs/:/outputs/'
+    restart: unless-stopped
