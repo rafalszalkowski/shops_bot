@@ -1,14 +1,16 @@
 version: "3"
 
 services:
-  wuhanpl:
+  shopsbot:
     container_name: shopsbot
     image: shopsbot:1.0
     environment:
-      TELEGRAM_TOKEN: 'TOKEN'
+      TELEGRAM_TOKEN: 'XXXXXXXXXXXXXX_TOKEN_HERE_XXXXXXXXXXXXXXX'
       OUTPUT_FOLDER: '/outputs/'
       REFRESH_MINUTES: '5'
       TZ: 'Europe/Warsaw'
+      PYTHONUNBUFFERED: 'true'
+      PYTHONIOENCODING: 'UTF-8'
     volumes:
       - './outputs/:/outputs/'
     restart: unless-stopped

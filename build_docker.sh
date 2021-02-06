@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker build --no-cache -t shopbots:1.0 .
+docker build -t shopsbot:1.0 .
