@@ -1,21 +1,23 @@
-import os
-
-import schedule
-import time
-from lxml import html
-import requests
 import json
-import telegram_sender
-from shutil import copyfile
 import logging
+import os
 import sys
+import time
+from shutil import copyfile
+
+import requests
+import schedule
+from lxml import html
+
+import telegram_sender
 
 CHAT_ID = "-1001353392493"
 
 SAVED_RESULT_PATH = os.path.join(os.getenv("OUTPUT_FOLDER"), "outputs.json")
 LINKS_ORIGIN_PATH = "links.txt"
 LINKS_LATER_PATH = os.path.join(os.getenv("OUTPUT_FOLDER"), "links.txt")
-HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36'}
+HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36'}
 SUPPORTED = {"www.mediaexpert.pl", "www.x-kom.pl"}
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format="%(asctime)-15s %(levelname)-8s %(message)s")
@@ -82,7 +84,8 @@ def _send_and_save_results_if_difference(current_results, previous_results):
     if previous_results != current_results:
         previous_results.clear()
         previous_results.update(current_results)
-        _send_alert(current_results)
+        if current_results:
+            _send_alert(current_results)
         _save_result(current_results)
     elif not os.path.isfile(SAVED_RESULT_PATH):
         _save_result(current_results)
