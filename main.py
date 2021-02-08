@@ -54,7 +54,7 @@ def _save_result(current_results):
 
 
 def _send_alert(current_results: dict):
-    message = "\n".join([k.split("/")[-1] + " Cena:" + v for (k, v) in current_results.items()])
+    message = "\n".join([k + " Cena:" + v for (k, v) in current_results.items()])
     telegram_sender.send(CHAT_ID, message)
 
 
@@ -72,7 +72,7 @@ def job(previous_results, current_results):
                 result[link] = price
         else:
             logging.info(f"Link not supported:{link}")
-        time.sleep(1)
+        time.sleep(3)
 
     current_results.clear()
     current_results.update(result)
