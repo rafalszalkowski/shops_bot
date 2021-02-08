@@ -70,9 +70,9 @@ def job(previous_results, current_results):
             logging.info(f"Fetched for {link} price {price}")
             if price:
                 result[link] = price
+            time.sleep(3)
         else:
             logging.info(f"Link not supported:{link}")
-        time.sleep(3)
 
     current_results.clear()
     current_results.update(result)
@@ -97,7 +97,8 @@ def _get_links():
         copyfile(LINKS_ORIGIN_PATH, LINKS_LATER_PATH)
 
     with open(links_path, "r") as links_f:
-        return links_f.read().splitlines()
+        lines = links_f.read().splitlines()
+        return [line.strip() for line in lines if line.strip() and line.strip()[0] != "#"]
 
 
 def _read_saved_results():
