@@ -13,9 +13,9 @@ import telegram_sender
 
 CHAT_ID = "-1001353392493"
 
-SAVED_RESULT_PATH = os.path.join(os.getenv("OUTPUT_FOLDER"), "outputs.json")
+SAVED_RESULT_PATH = os.path.join(os.getenv("OUTPUT_FOLDER", default="outputs"), "outputs.json")
 LINKS_ORIGIN_PATH = "links.txt"
-LINKS_LATER_PATH = os.path.join(os.getenv("OUTPUT_FOLDER"), "links.txt")
+LINKS_LATER_PATH = os.path.join(os.getenv("OUTPUT_FOLDER", default="outputs"), "links.txt")
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36'}
 SUPPORTED = {"www.mediaexpert.pl", "www.x-kom.pl"}
@@ -26,14 +26,14 @@ counter = 0
 
 
 def _media_expert_parse(tree):
-    elems = tree.xpath('//div[@data-label="Cena regularna"]//span[@class="a-price_price"]/text()')
-    return elems[0] if elems else None
+    elems = tree.xpath('//sticky//div[@data-price]')
+    return "{:,.2f} PLN".format(float(elems[0].attrib['data-price'])/100.) if elems and 'data-price' in elems[0].attrib else None
 
 
 def _xkom_parse(tree):
     if tree.xpath('//text()="Powiadom o dostępności"'):
         return None
-    elems = tree.xpath('//div[@class="u7xnnm-4 iVazGO"]/text()')
+    elems = tree.xpath('//div[@class="u7xnnm-4 jFbqvs"]/text()')
     return elems[0] if elems else None
 
 
@@ -62,7 +62,7 @@ def job(previous_results, current_results):
     global counter
     logging.info(f"I'm working in loop: {counter}")
     counter += 1
-    result = dict()
+    result = {}
     links = _get_links()
     for link in links:
         if _is_supported(link):
@@ -103,7 +103,7 @@ def _get_links():
 
 def _read_saved_results():
     if not os.path.isfile(SAVED_RESULT_PATH):
-        return dict()
+        return {}
 
     with open(SAVED_RESULT_PATH, "r") as f:
         return json.load(f)
