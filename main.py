@@ -59,7 +59,7 @@ def _send_alert(current_results: dict):
     telegram_sender.send(CHAT_ID, message)
 
 
-def job(previous_results, current_results):
+def job(previous_results, current_results, next_request_seconds):
     global counter
     logging.info(f"I'm working in loop: {counter}")
     counter += 1
@@ -71,7 +71,7 @@ def job(previous_results, current_results):
             logging.info(f"Fetched for {link} price {price}")
             if price:
                 result[link] = price
-            time.sleep(3)
+            time.sleep(next_request_seconds)
         else:
             logging.info(f"Link not supported:{link}")
 
