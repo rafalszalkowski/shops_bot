@@ -27,7 +27,8 @@ counter = 0
 
 def _media_expert_parse(tree):
     elems = tree.xpath('//sticky//div[@data-price]')
-    return "{:,.2f} PLN".format(float(elems[0].attrib['data-price'])/100.) if elems and 'data-price' in elems[0].attrib else None
+    return "{:,.2f} PLN".format(float(elems[0].attrib['data-price']) / 100.) if elems and 'data-price' in elems[
+        0].attrib else None
 
 
 def _xkom_parse(tree):
@@ -113,7 +114,8 @@ if __name__ == '__main__':
     logging.info("Starting program")
     previous = _read_saved_results()
     current = previous.copy()
-    schedule.every(int(os.getenv("REFRESH_MINUTES"))).minutes.do(job, previous, current)
+    schedule.every(int(os.getenv("REFRESH_MINUTES", default=10))). \
+        minutes.do(job, previous, current, int(os.getenv("NEXT_QUERY_SECONDS", default=15)))
     while True:
         schedule.run_pending()
         time.sleep(1)
