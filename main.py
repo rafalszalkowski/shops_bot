@@ -27,12 +27,12 @@ counter = 0
 
 def _media_expert_parse(tree):
     elems = tree.xpath('//sticky//div[@data-price]')
-    return "{:,.2f} PLN".format(float(elems[0].attrib['data-price']) / 100.) if elems and 'data-price' in elems[
-        0].attrib else None
+    available = "Produkt chwilowo" not in tree.text_content() and elems and 'data-price' in elems[0].attrib
+    return "{:,.2f} PLN".format(float(elems[0].attrib['data-price']) / 100.) if available else None
 
 
 def _xkom_parse(tree):
-    if tree.xpath('//text()="Powiadom o dostępności"'):
+    if tree.xpath('//text()="Powiadom o dostępności"') or "Wycofany" in tree.text_content():
         return None
     elems = tree.xpath('//div[@class="u7xnnm-4 jFbqvs"]/text()')
     return elems[0] if elems else None
