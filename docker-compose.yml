@@ -3,7 +3,7 @@ version: "3"
 services:
   shopsbot:
     container_name: shopsbot
-    image: shopsbot:1.1
+    image: shopsbot:1.2
     environment:
       TELEGRAM_TOKEN: 'XXXXXXXXXXXXXX_TOKEN_HERE_XXXXXXXXXXXXXXX'
       OUTPUT_FOLDER: '/outputs/'

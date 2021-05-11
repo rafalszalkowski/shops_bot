@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker build -t shopsbot:1.1 .
+docker build -t shopsbot:1.2 .

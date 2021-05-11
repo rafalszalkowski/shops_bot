@@ -82,12 +82,14 @@ def job(previous_results, current_results, next_request_seconds):
 
 
 def _send_and_save_results_if_difference(current_results, previous_results):
-    if previous_results != current_results:
-        previous_results.clear()
-        previous_results.update(current_results)
-        if current_results:
-            _send_alert(current_results)
-        _save_result(current_results)
+    different_dict = {k: v for k, v in current_results.items() if
+                      (k in previous_results and v != previous_results[k]) or k not in previous_results}
+    if previous_results != different_dict:
+        #previous_results.clear()
+        previous_results.update(different_dict)
+        if different_dict:
+            _send_alert(different_dict)
+        _save_result(previous_results)
     elif not os.path.isfile(SAVED_RESULT_PATH):
         _save_result(current_results)
 
