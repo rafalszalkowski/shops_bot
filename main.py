@@ -19,7 +19,6 @@ LINKS_ORIGIN_PATH = "links.txt"
 LINKS_LATER_PATH = os.path.join(os.getenv("OUTPUT_FOLDER", default="outputs"), "links.txt")
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36'}
-SUPPORTED = {"www.mediaexpert.pl", "www.x-kom.pl"}
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format="%(asctime)-15s %(levelname)-8s %(message)s")
 
@@ -95,7 +94,7 @@ PARSERS = [MediaExpertParser(), XKomParser(), SferisParser(), KomputronikParser(
 
 
 def _is_supported(link):
-    return bool({link.split("/")[2]} & SUPPORTED)
+    return bool([parser for parser in PARSERS if parser.is_this_page(link)])
 
 
 def process_link(link):
