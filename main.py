@@ -90,7 +90,18 @@ class MoreleParser(PageParser):
         return str(elems[0]).strip() if elems else None
 
 
-PARSERS = [MediaExpertParser(), XKomParser(), SferisParser(), KomputronikParser(), MoreleParser()]
+class ProlineParser(PageParser):
+    def is_this_page(self, link):
+        return "proline.pl" in link
+
+    def parse(self, tree):
+        if "Brak towaru" in tree.text_content():
+            return None
+        elems = tree.xpath('(//div[@class="cell-round-title"]//b[@class="cena_b"])[1]/span/text()')
+        return str(elems[0]).strip() if elems else None
+
+
+PARSERS = [MediaExpertParser(), XKomParser(), SferisParser(), KomputronikParser(), MoreleParser(), ProlineParser()]
 
 
 def _is_supported(link):

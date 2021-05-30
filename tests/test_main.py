@@ -63,3 +63,16 @@ def test_morele_not_empty():
         "https://www.morele.net/karta-graficzna-msi-geforce-gtx-1650-d6-ventus-xs-oc-v2-4gb-gddr6"
         "-gtx-1650-d6-ventus-xs-ocv2-5945480/")
     assert price is not None
+
+
+def test_proline_empty():
+    price = process_link(
+        "https://proline.pl/gigabyte-geforce-rtx-3080-aorus-xtreme-waterforce-wb"
+        "-10gb-gddr6x-gv-n3080aorusx-wb-10gd-p8078249")
+    assert price is None
+
+
+def test_proline_not_empty():
+    price = process_link(
+        "https://proline.pl/gigabyte-geforce-rtx-3060-gaming-oc-12gb-gddr6-gv-n3060gaming-oc-12gd-p8077482")
+    assert price is not None
