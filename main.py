@@ -1,3 +1,4 @@
+import abc
 import json
 import logging
 import os
@@ -25,17 +26,72 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO, format="%(asctime)-15
 counter = 0
 
 
-def _media_expert_parse(tree):
-    elems = tree.xpath('//sticky//div[@data-price]')
-    available = "Produkt chwilowo" not in tree.text_content() and elems and 'data-price' in elems[0].attrib
-    return "{:,.2f} PLN".format(float(elems[0].attrib['data-price']) / 100.) if available else None
+class PageParser(abc.ABC):
+
+    @abc.abstractmethod
+    def is_this_page(self, link):
+        pass
+
+    @abc.abstractmethod
+    def parse(self, tree):
+        pass
 
 
-def _xkom_parse(tree):
-    if tree.xpath('//text()="Powiadom o dostępności"') or "Wycofany" in tree.text_content():
-        return None
-    elems = tree.xpath('//div[@class="u7xnnm-4 jFbqvs"]/text()')
-    return elems[0] if elems else None
+class MediaExpertParser(PageParser):
+    def is_this_page(self, link):
+        return "mediaexpert.pl" in link
+
+    def parse(self, tree):
+        elems = tree.xpath('//sticky//div[@data-price]')
+        available = "Produkt chwilowo" not in tree.text_content() and elems and 'data-price' in elems[0].attrib
+        return "{:,.2f} PLN".format(float(elems[0].attrib['data-price']) / 100.) if available else None
+
+
+class XKomParser(PageParser):
+    def is_this_page(self, link):
+        return "x-kom.pl" in link
+
+    def parse(self, tree):
+        if tree.xpath('//text()="Powiadom o dostępności"') or "Wycofany" in tree.text_content():
+            return None
+        elems = tree.xpath('//div[@class="u7xnnm-4 jFbqvs"]/text()')
+        return elems[0] if elems else None
+
+
+class SferisParser(PageParser):
+    def is_this_page(self, link):
+        return "sferis.pl" in link
+
+    def parse(self, tree):
+        if tree.xpath('//text()="Produkt chwilowo niedostępny"'):
+            return None
+        elems = tree.xpath('//div[@class="prices multi"]/span/text()')
+        return elems[0] if elems else None
+
+
+class KomputronikParser(PageParser):
+    def is_this_page(self, link):
+        return "komputronik.pl" in link
+
+    def parse(self, tree):
+        if "unavailable" in tree.text_content():
+            return None
+        elems = tree.xpath('//span[@class="price"]/span[@class="proper"]/text()[1]')
+        return str(elems[0]).strip() if elems else None
+
+
+class MoreleParser(PageParser):
+    def is_this_page(self, link):
+        return "morele.net" in link
+
+    def parse(self, tree):
+        if "PRODUKT NIEDOSTĘPNY" in tree.text_content():
+            return None
+        elems = tree.xpath('//div[@class="product-price"]/text()[1]')
+        return str(elems[0]).strip() if elems else None
+
+
+PARSERS = [MediaExpertParser(), XKomParser(), SferisParser(), KomputronikParser(), MoreleParser()]
 
 
 def _is_supported(link):
@@ -45,7 +101,10 @@ def _is_supported(link):
 def process_link(link):
     page = requests.get(link, allow_redirects=True, headers=HEADERS)
     tree = html.fromstring(page.content)
-    return _media_expert_parse(tree) if "mediaexpert.pl" in link else _xkom_parse(tree)
+    parsers_for_link = [parser for parser in PARSERS if parser.is_this_page(link)]
+    assert len(parsers_for_link) == 1
+    price = parsers_for_link[0].parse(tree)
+    return str(price) if price else None
 
 
 def _save_result(current_results):
@@ -85,7 +144,7 @@ def _send_and_save_results_if_difference(current_results, previous_results):
     different_dict = {k: v for k, v in current_results.items() if
                       (k in previous_results and v != previous_results[k]) or k not in previous_results}
     if previous_results != different_dict:
-        #previous_results.clear()
+        # previous_results.clear()
         previous_results.update(different_dict)
         if different_dict:
             _send_alert(different_dict)
