@@ -76,3 +76,21 @@ def test_proline_not_empty():
     price = process_link(
         "https://proline.pl/gigabyte-geforce-rtx-3060-gaming-oc-12gb-gddr6-gv-n3060gaming-oc-12gd-p8077482")
     assert price is not None
+
+
+def test_nbb_empty():
+    price = process_link(
+        "https://www.notebooksbilliger.de/nvidia+geforce+rtx+3080+founders+edition+714792")
+    assert price is None
+
+
+def test_nbbp_not_empty():
+    price = process_link(
+        "https://www.notebooksbilliger.de/hp+250+g7+15s88es+662188")
+    assert price is not None
+
+
+def test_nbbp_not_empty_without_promo():
+    price = process_link(
+        "https://www.notebooksbilliger.de/notebooks/acer+notebooks/acer+aspire+5+a515+44g+r8ab+651870")
+    assert price is not None

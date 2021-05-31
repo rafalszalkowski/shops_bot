@@ -101,7 +101,20 @@ class ProlineParser(PageParser):
         return str(elems[0]).strip() if elems else None
 
 
-PARSERS = [MediaExpertParser(), XKomParser(), SferisParser(), KomputronikParser(), MoreleParser(), ProlineParser()]
+class NbbParser(PageParser):
+    def is_this_page(self, link):
+        return "notebooksbilliger.de/" in link
+
+    def parse(self, tree):
+        if "Dieses Produkt ist leider ausverkauft." in tree.text_content():
+            return None
+        elems = tree.xpath(
+            '//div[@class="right_column pdw_rc"]//form[@name="cart_quantity"]//span[@class="product-price__regular js-product-price"]/text()')
+        return str(elems[0]).strip() if elems else None
+
+
+PARSERS = [MediaExpertParser(), XKomParser(), SferisParser(), KomputronikParser(), MoreleParser(), ProlineParser(),
+           NbbParser()]
 
 
 def _is_supported(link):
