@@ -60,8 +60,7 @@ def test_morele_empty():
 
 def test_morele_not_empty():
     price = process_link(
-        "https://www.morele.net/karta-graficzna-msi-geforce-gtx-1650-d6-ventus-xs-oc-v2-4gb-gddr6"
-        "-gtx-1650-d6-ventus-xs-ocv2-5945480/")
+        "https://www.morele.net/incore-sprezone-powietrze-do-usuwania-kurzu-600-ml-isc1280-274629/")
     assert price is not None
 
 
