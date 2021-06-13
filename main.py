@@ -41,9 +41,12 @@ class MediaExpertParser(PageParser):
         return "mediaexpert.pl" in link
 
     def parse(self, tree):
-        elems = tree.xpath('//sticky//div[@data-price]')
-        available = "Produkt chwilowo" not in tree.text_content() and elems and 'data-price' in elems[0].attrib
-        return "{:,.2f} PLN".format(float(elems[0].attrib['data-price']) / 100.) if available else None
+        available = "Produkt chwilowo" not in tree.text_content()
+        price_lines = [line for line in tree.text_content().split("\n") if "ecomm_pvalue:" in line]
+        if not available or not price_lines:
+            return None
+        price = price_lines[0][len(' ecomm_pvalue: \''):-2]
+        return price
 
 
 class XKomParser(PageParser):

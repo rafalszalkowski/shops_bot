@@ -15,6 +15,13 @@ def test_media_not_empty():
     assert price is not None
 
 
+def test_media_not_empty_correct_price():
+    price = process_link(
+        "https://www.mediaexpert.pl/komputery-i-tablety/podzespoly-komputerowe/"
+        "karty-graficzne/karta-graficzna-msi-geforce-rtx-3080-ti-suprim-x-12gb")
+    assert price is not None
+
+
 def test_xkom_empty():
     price = process_link(
         "https://www.x-kom.pl/p/600904-karta-graficzna-nvidia-msi-geforce-rtx-3080-suprim-x-10gb-gddr6x.html")
