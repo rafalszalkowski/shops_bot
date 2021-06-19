@@ -36,10 +36,13 @@ def _is_supported(link):
 def process_link(link, parser_for_link=None):
     if parser_for_link is None:
         parser_for_link = [parser for parser in PARSERS if parser.is_this_page(link)][0]
-    page = requests.get(link, allow_redirects=True, headers=HEADERS)
-    tree = html.fromstring(page.content)
-    price = parser_for_link.parse(tree)
-    return str(price) if price else None
+    try:
+        page = requests.get(link, allow_redirects=True, headers=HEADERS)
+        tree = html.fromstring(page.content)
+        price = parser_for_link.parse(tree)
+        return str(price) if price else None
+    except:
+        return None
 
 
 def _save_result(current_results):
