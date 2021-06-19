@@ -1,3 +1,6 @@
+import pytest
+
+from telegram_sender import send
 from main import process_link
 
 
@@ -100,3 +103,44 @@ def test_nbbp_not_empty_without_promo():
     price = process_link(
         "https://www.notebooksbilliger.de/notebooks/acer+notebooks/acer+aspire+5+a515+44g+r8ab+651870")
     assert price is not None
+
+
+def test_komtek24_not_empty():
+    price = process_link(
+        "https://komtek24.pl/karta-graficzna-asus-rtx-3080-rog-strix")
+    assert price is not None
+
+
+def test_komtek24_empty():
+    price = process_link(
+        "https://komtek24.pl/karta-graficzna-asus-rtx-3080-gaming-tuf-10gb-gddr6x")
+    assert price is None
+
+
+def test_foxkomputer_not_empty():
+    price = process_link(
+        "https://foxkomputer.pl/pl/p/Karta-graficzna-Gigabyte-RTX-3080-Ti-VISION-OC-12GB-GDDR6X/17103")
+    assert price is not None
+
+
+def test_foxkomputer_empty():
+    price = process_link(
+        "https://foxkomputer.pl/pl/p/Karta-graficzna-MSI-GeForce-RTX-3080-SUPRIM-X-10G-GDDR6X-OEM/15118")
+    assert price is None
+
+
+def test_euro_not_empty():
+    price = process_link(
+        "https://www.euro.com.pl/karty-graficzne/gigabyte-karta-gragiczna-gigabyte-rtx-3080-eagle.bhtml")
+    assert price is not None
+
+
+def test_euro_empty():
+    price = process_link(
+        "https://www.euro.com.pl/karty-graficzne/msi-karta-gragiczna-msi-rtx-3080-gaming-x-tr.bhtml")
+    assert price is None
+
+
+@pytest.mark.skip("Integration test")
+def test_send_telegram():
+    send("-1001442476457", "test")

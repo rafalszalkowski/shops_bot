@@ -12,11 +12,11 @@ from lxml import html
 
 import telegram_sender
 
-CHAT_ID = "-1001353392493"
+CHAT_ID_RTX3080 = "-1001442476457"
 
 SAVED_RESULT_PATH = os.path.join(os.getenv("OUTPUT_FOLDER", default="outputs"), "outputs.json")
-LINKS_ORIGIN_PATH = "links.txt"
-LINKS_LATER_PATH = os.path.join(os.getenv("OUTPUT_FOLDER", default="outputs"), "links.txt")
+LINKS_ORIGIN_PATH = "links_3080.txt"
+LINKS_LATER_PATH = os.path.join(os.getenv("OUTPUT_FOLDER", default="outputs"), "links_3080.txt")
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36'}
 
@@ -25,11 +25,16 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO, format="%(asctime)-15
 counter = 0
 
 
-class PageParser(abc.ABC):
+def get_lines(tree, search):
+    return [line for line in tree.text_content().split("\n") if search in line]
 
-    @abc.abstractmethod
+
+class PageParser(abc.ABC):
+    def __init__(self, domain):
+        self.domain = domain
+
     def is_this_page(self, link):
-        pass
+        return self.domain in link
 
     @abc.abstractmethod
     def parse(self, tree):
@@ -37,12 +42,12 @@ class PageParser(abc.ABC):
 
 
 class MediaExpertParser(PageParser):
-    def is_this_page(self, link):
-        return "mediaexpert.pl" in link
+    def __init__(self):
+        super().__init__("mediaexpert.pl")
 
     def parse(self, tree):
         available = "Produkt chwilowo" not in tree.text_content()
-        price_lines = [line for line in tree.text_content().split("\n") if "ecomm_pvalue:" in line]
+        price_lines = get_lines(tree, "ecomm_pvalue:")
         if not available or not price_lines:
             return None
         price = price_lines[0][len(' ecomm_pvalue: \''):-2]
@@ -50,8 +55,8 @@ class MediaExpertParser(PageParser):
 
 
 class XKomParser(PageParser):
-    def is_this_page(self, link):
-        return "x-kom.pl" in link
+    def __init__(self):
+        super().__init__("x-kom.pl")
 
     def parse(self, tree):
         if tree.xpath('//text()="Powiadom o dostępności"') or "Wycofany" in tree.text_content():
@@ -61,8 +66,8 @@ class XKomParser(PageParser):
 
 
 class SferisParser(PageParser):
-    def is_this_page(self, link):
-        return "sferis.pl" in link
+    def __init__(self):
+        super().__init__("sferis.pl")
 
     def parse(self, tree):
         if tree.xpath('//text()="Produkt chwilowo niedostępny"'):
@@ -72,8 +77,8 @@ class SferisParser(PageParser):
 
 
 class KomputronikParser(PageParser):
-    def is_this_page(self, link):
-        return "komputronik.pl" in link
+    def __init__(self):
+        super().__init__("komputronik.pl")
 
     def parse(self, tree):
         if "unavailable" in tree.text_content():
@@ -83,8 +88,8 @@ class KomputronikParser(PageParser):
 
 
 class MoreleParser(PageParser):
-    def is_this_page(self, link):
-        return "morele.net" in link
+    def __init__(self):
+        super().__init__("morele.net")
 
     def parse(self, tree):
         if "PRODUKT NIEDOSTĘPNY" in tree.text_content():
@@ -94,8 +99,8 @@ class MoreleParser(PageParser):
 
 
 class ProlineParser(PageParser):
-    def is_this_page(self, link):
-        return "proline.pl" in link
+    def __init__(self):
+        super().__init__("proline.pl")
 
     def parse(self, tree):
         if "Brak towaru" in tree.text_content():
@@ -105,8 +110,8 @@ class ProlineParser(PageParser):
 
 
 class NbbParser(PageParser):
-    def is_this_page(self, link):
-        return "notebooksbilliger.de/" in link
+    def __init__(self):
+        super().__init__("notebooksbilliger.de")
 
     def parse(self, tree):
         if "Dieses Produkt ist leider ausverkauft." in tree.text_content():
@@ -116,8 +121,41 @@ class NbbParser(PageParser):
         return str(elems[0]).strip() if elems else None
 
 
+class Komtek24(PageParser):
+    def __init__(self):
+        super().__init__("komtek24.pl")
+
+    def parse(self, tree):
+        if tree.xpath('//fieldset[@class="availability-notifier-container"]//span[text()="powiadom o dostępności"]'):
+            return None
+        elems = tree.xpath('//em[@class="main-price"]/text()')
+        return str(elems[0]).strip() if elems else None
+
+
+class FoxKomputer(PageParser):
+    def __init__(self):
+        super().__init__("foxkomputer.pl")
+
+    def parse(self, tree):
+        if "Ten produkt jest niedostępny." in tree.text_content():
+            return None
+        elems = tree.xpath('//em[@class="main-price"]/text()')
+        return str(elems[0]).strip() if elems else None
+
+
+class RtvEuro(PageParser):
+    def __init__(self):
+        super().__init__("www.euro.com.pl")
+
+    def parse(self, tree):
+        if get_lines(tree, "unavailableAtTheMoment: true,"):
+            return None
+        price_lines = get_lines(tree, "price: ")
+        return price_lines[0][10:-2] if price_lines else None
+
+
 PARSERS = [MediaExpertParser(), XKomParser(), SferisParser(), KomputronikParser(), MoreleParser(), ProlineParser(),
-           NbbParser()]
+           NbbParser(), Komtek24(), FoxKomputer(), RtvEuro()]
 
 
 def _is_supported(link):
@@ -141,7 +179,7 @@ def _save_result(current_results):
 
 def _send_alert(current_results: dict):
     message = "\n".join([k + " Cena:" + v for (k, v) in current_results.items()])
-    telegram_sender.send(CHAT_ID, message)
+    telegram_sender.send(CHAT_ID_RTX3080, message)
 
 
 def job(previous_results, current_results, next_request_seconds):
