@@ -72,9 +72,9 @@ def job(previous_results, current_results, next_request_seconds):
     _send_and_save_results_if_difference(current_results, previous_results)
 
 
-def _process_per_parser(parser_and_links, next_request_seconds) -> dict:
+def _process_per_parser(params) -> dict:
     result = dict()
-    parser, links = parser_and_links
+    (parser, links), next_request_seconds = params
     for link in links:
         price = process_link(link, parser)
         logging.info(f"Fetched for {link} price {price}")
