@@ -126,11 +126,15 @@ def _get_parsers_queue():
         parsers_queue[parser] = list()
 
     for link in links:
+        found = False
         for parser, parser_links in parsers_queue.items():
+
             if parser.is_this_page(link):
                 parsers_queue[parser].append(link)
-            else:
-                logging.error(f"Not supported link: {link}")
+                found = True
+
+        if not found:
+            logging.error(f"Not supported link: {link}")
 
     return parsers_queue
 
