@@ -144,3 +144,16 @@ def test_euro_empty():
 @pytest.mark.skip("Integration test")
 def test_send_telegram():
     send("-1001442476457", "test")
+
+
+def test_apollo_not_empty():
+    price = process_link(
+        "https://www.apollo.pl/produkt/karta-graficzna-msi-geforce-rtx3080-suprim-x-10gb-gddr6x,220062.html")
+    assert price is not None
+
+
+def test_apollo_empty():
+    price = process_link(
+        "https://www.apollo.pl/produkt/karta-graficzna-zotac-geforce-rtx-3080-gaming-amp-holo-10gb-rtx3080,218422.html")
+    assert price is None
+

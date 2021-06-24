@@ -1,4 +1,6 @@
 import abc
+
+
 def get_lines(tree, search):
     return [line for line in tree.text_content().split("\n") if search in line]
 
@@ -31,8 +33,7 @@ class MediaExpertParser(PageParser):
         price_lines = get_lines(tree, "ecomm_pvalue:")
         if not available or not price_lines:
             return None
-        price = price_lines[0][len(' ecomm_pvalue: \''):-2]
-        return price
+        return [line for line in price_lines[0].split(",") if "ecomm_pvalue:" in line][0][len(' ecomm_pvalue: \''):-2]
 
 
 class XKomParser(PageParser):
@@ -133,3 +134,15 @@ class RtvEuro(PageParser):
             return None
         price_lines = get_lines(tree, "price: ")
         return price_lines[0][10:-2] if price_lines else None
+
+
+class Apollo(PageParser):
+    def __init__(self):
+        super().__init__("apollo.pl")
+
+    def parse(self, tree):
+        if "Niedostępny" in tree.text_content():
+            return None
+
+        elems = tree.xpath('//span[@class="js-cena"]/text()')
+        return str(elems[0]).strip() if elems else None

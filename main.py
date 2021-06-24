@@ -3,15 +3,16 @@ import logging
 import os
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor
 from shutil import copyfile
 
 import requests
 import schedule
 from lxml import html
-from concurrent.futures import ThreadPoolExecutor
+
 import telegram_sender
 from parsers import MediaExpertParser, XKomParser, SferisParser, KomputronikParser, MoreleParser, ProlineParser, \
-    NbbParser, Komtek24, FoxKomputer, RtvEuro
+    NbbParser, Komtek24, FoxKomputer, RtvEuro, Apollo
 
 CHAT_ID_RTX3080 = "-1001442476457"
 
@@ -26,7 +27,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO, format="%(asctime)-15
 counter = 0
 
 PARSERS = [MediaExpertParser(), XKomParser(), SferisParser(), KomputronikParser(), MoreleParser(), ProlineParser(),
-           NbbParser(), Komtek24(), FoxKomputer(), RtvEuro()]
+           NbbParser(), Komtek24(), FoxKomputer(), RtvEuro(), Apollo()]
 
 
 def _is_supported(link):
