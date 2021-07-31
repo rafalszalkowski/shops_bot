@@ -166,4 +166,26 @@ https://www.komputronik.pl/product/729208/gigabyte-geforce-rtx-3060-ti-aorus-eli
 https://www.komputronik.pl/product/727370/asus-geforce-rtx-3060-tuf-12gb-v2-lhr.html
 https://www.komputronik.pl/product/721574/gigabyte-geforce-rtx-3060-ti-gaming-pro-8gb.html
 https://www.komputronik.pl/product/729330/gigabyte-geforce-rtx-3060-ti-gaming-8gb-oc-2-0-lhr.html
+https://proline.pl/gigabyte-geforce-rtx-3060-ti-aorus-elite-8gb-gddr6-gv-n306taorus-e-8gd-2-0-p8079029
+https://proline.pl/gigabyte-geforce-rtx-3060-ti-eagle-8gb-gddr6-lhr-gv-n306teagle-8gd-2-0-p8078733
+https://proline.pl/gigabyte-geforce-rtx-3060-ti-eagle-oc-8gb-gddr6-lhr-gv-n306teagle-oc-8gd-2-0-p8078732
+https://proline.pl/gigabyte-geforce-rtx-3060-ti-gaming-oc-pro-8gb-gddr6-lhr-gv-n306tgamingoc-pro-8gd-2-0-p8076420
+https://proline.pl/gigabyte-geforce-rtx-3060-ti-gaming-oc-pro-8gb-gddr6-lhr-gv-n306tgamingoc-pro-8gd-3-0-p8078736
+https://proline.pl/msi-geforce-rtx-3060-ti-gaming-x-8gb-lhr-gddr6-p8079048
+https://proline.pl/gigabyte-geforce-rtx-3060-aorus-elite-12gb-gddr6-gv-n3060aorus-e-12gd-p8077647
+https://proline.pl/gigabyte-geforce-rtx-3060-aorus-elite-12gb-gddr6-lhr-gv-n3060aorus-e-12gd-2-0-p8078601
+https://proline.pl/gigabyte-geforce-rtx-3060-eagle-12gb-gddr6-gv-n3060eagle-12gd-p8077478
+https://proline.pl/gigabyte-geforce-rtx-3060-eagle-oc-12gb-gddr6-gv-n3060eagle-oc-12gd-p8077480
+https://proline.pl/gigabyte-geforce-rtx-3060-eagle-oc-12gb-gddr6-lhr-gv-n3060eagle-oc-12gd-2-0-p8078602
+https://proline.pl/gigabyte-geforce-rtx-3060-gaming-oc-12gb-gddr6-lhr-gv-n3060gaming-oc-12gd-2-0-p8078593
+https://proline.pl/gigabyte-geforce-rtx-3060-ti-vision-oc-8gb-gddr6-lhr-gv-n306tvision-oc-8gd-2-0-p8078780
+https://proline.pl/gigabyte-geforce-rtx-3060-vision-oc-12gb-gddr6-gv-n3060vision-oc-12gd-p8077479
+https://proline.pl/gigabyte-geforce-rtx-3060-vision-oc-12gb-gddr6-lhr-gv-n3060vision-oc-12gd-2-0-p8078603
+https://proline.pl/msi-geforce-rtx-3060-gaming-x-12gb-gddr6-p8077522
+https://proline.pl/msi-geforce-rtx-3060-gaming-x-trio-12gb-gddr6-p8077523
+https://proline.pl/msi-geforce-rtx-3060-ti-ventus-3x-oc-8gb-lhr-gddr6-p8078720
+https://proline.pl/msi-geforce-rtx-3060-ventus-2x-oc-12gb-gddr6-p8077481
+https://proline.pl/msi-geforce-rtx-3060-ventus-3x-oc-12gb-gddr6-p8077483
+https://proline.pl/palit-geforce-rtx-3060-stormx-oc-12gb-gddr6-ne63060s19k9-190af-p8078453
+
 
