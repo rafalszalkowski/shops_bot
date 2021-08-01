@@ -14,10 +14,10 @@ import telegram_sender
 from parsers import MediaExpertParser, XKomParser, SferisParser, KomputronikParser, MoreleParser, ProlineParser, \
     NbbParser, Komtek24, FoxKomputer, RtvEuro, Apollo
 
-CHAT_ID_RTX3080 = "-1001442476457"
+CHAT_ID_RTX3080 = "-1001544956912"
 
 SAVED_RESULT_PATH = os.path.join(os.getenv("OUTPUT_FOLDER", default="outputs"), "outputs.json")
-LINKS_ORIGIN_PATH = "links_3080.txt"
+LINKS_ORIGIN_PATH = "links_3060.txt"
 LINKS_LATER_PATH = os.path.join(os.getenv("OUTPUT_FOLDER", default="outputs"), "links_3080.txt")
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36'}
