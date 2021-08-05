@@ -5,7 +5,7 @@ services:
     container_name: shopsbot
     image: shopsbot:1.2
     environment:
-      TELEGRAM_TOKEN: '1722784048:AAFPSM4dz1CAKyrF85oEcOZ3ZGQfuyXQ-uY'
+      TELEGRAM_TOKEN: 'TOKEN'
       OUTPUT_FOLDER: '/outputs/'
       REFRESH_MINUTES: '10'
       NEXT_QUERY_SECONDS: '15'
