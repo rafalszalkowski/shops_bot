@@ -14,7 +14,7 @@ import telegram_sender
 from parsers import MediaExpertParser, XKomParser, SferisParser, KomputronikParser, MoreleParser, ProlineParser, \
     NbbParser, Komtek24, FoxKomputer, RtvEuro, Apollo
 
-CHAT_ID_RTX3080 = "-1001544956912"
+CHAT_ID_RTX3080 = "chatid"
 
 SAVED_RESULT_PATH = os.path.join(os.getenv("OUTPUT_FOLDER", default="outputs"), "outputs.json")
 LINKS_ORIGIN_PATH = "links_3060.txt"
